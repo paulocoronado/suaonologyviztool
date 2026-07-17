@@ -5,9 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint src",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "husky",
+    "ci:local": "npm run lint && npm run type-check && npm run test:cov && npm run build"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "cytoscape": "^3.34.0",
