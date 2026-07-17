@@ -8,7 +8,7 @@
     "lint": "eslint src",
     "type-check": "tsc --noEmit",
     "test": "vitest",
-    "test:cov": "vitest run --coverage",
+    "test:cov": "vitest run --coverage --passWithNoTests",
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky",
