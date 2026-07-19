@@ -56,8 +56,9 @@ export class TripleToModelMapper {
 
   private handleDataProperty(triple: Triple): void {
     const origen = this.findEntity(triple.subject);
-    if (origen instanceof Individual)
+    if (origen instanceof Individual || origen instanceof OntClass) {
       origen.setDataValue(triple.predicate, triple.object);
+    }
   }
 
   private handleObjectProperty(triple: Triple): void {

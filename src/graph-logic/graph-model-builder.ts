@@ -1,5 +1,6 @@
 import type { IOntologyModel } from "../domain/interfaces/ontology-model.interface";
 import { RelationKind } from "../domain/interfaces/relation.interface";
+import { RDF_VOCABULARY } from "../parsing/rdf-vocabulary";
 import type { IGraphModelBuilder } from "./interfaces/graph-model-builder.interface";
 import {
   NodeType,
@@ -18,6 +19,7 @@ export class GraphModelBuilder implements IGraphModelBuilder {
         id: clase.id,
         label: clase.label,
         nodeType: NodeType.CLASS,
+        rdfsLabel: this.extractRdfsLabel(clase.dataValues),
       });
       for (const padre of clase.superClasses) {
         edges.push({
@@ -35,6 +37,7 @@ export class GraphModelBuilder implements IGraphModelBuilder {
         label: individuo.label,
         nodeType: NodeType.INDIVIDUAL,
         parentGroupId: individuo.types[0]?.id,
+        rdfsLabel: this.extractRdfsLabel(individuo.dataValues),
       });
       for (const relacion of individuo.relations) {
         edges.push({
@@ -47,5 +50,12 @@ export class GraphModelBuilder implements IGraphModelBuilder {
     }
 
     return { nodes, edges };
+  }
+
+  private extractRdfsLabel(
+    dataValues: ReadonlyMap<string, unknown>,
+  ): string | undefined {
+    const valor = dataValues.get(RDF_VOCABULARY.LABEL);
+    return typeof valor === "string" ? valor : undefined;
   }
 }

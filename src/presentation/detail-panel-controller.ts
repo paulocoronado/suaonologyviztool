@@ -1,5 +1,6 @@
 import type { IOntEntity } from "../domain/interfaces/ont-entity.interface";
 import type { IIndividual } from "../domain/interfaces/individual.interface";
+import { shortenUri } from "./uri-format";
 
 export interface DetailDataEntry {
   propiedad: string;
@@ -13,14 +14,19 @@ export interface DetailView {
   datos: DetailDataEntry[];
 }
 
+interface HasDataValues {
+  readonly dataValues: ReadonlyMap<string, unknown>;
+}
+
 export class DetailPanelController {
   showDetails(entity: IOntEntity): DetailView {
     const individuo = this.asIndividual(entity);
+    const conDatos = this.asEntityWithData(entity);
     return {
       id: entity.id,
       label: entity.label,
       tiposMostrados: individuo ? individuo.types.map((t) => t.label) : [],
-      datos: individuo ? this.formatDataValues(individuo) : [],
+      datos: conDatos ? this.formatDataValues(conDatos) : [],
     };
   }
 
@@ -28,17 +34,16 @@ export class DetailPanelController {
     return "types" in entity ? (entity as IIndividual) : undefined;
   }
 
-  private formatDataValues(individuo: IIndividual): DetailDataEntry[] {
-    return Array.from(individuo.dataValues.entries()).map(
+  private asEntityWithData(entity: IOntEntity): HasDataValues | undefined {
+    return "dataValues" in entity ? (entity as HasDataValues) : undefined;
+  }
+
+  private formatDataValues(entity: HasDataValues): DetailDataEntry[] {
+    return Array.from(entity.dataValues.entries()).map(
       ([propiedad, valor]) => ({
-        propiedad: this.acortarUri(propiedad),
+        propiedad: shortenUri(propiedad),
         valor: String(valor),
       }),
     );
-  }
-
-  private acortarUri(uri: string): string {
-    const partes = uri.split(/[#/]/);
-    return partes[partes.length - 1] || uri;
   }
 }

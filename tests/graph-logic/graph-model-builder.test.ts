@@ -22,4 +22,11 @@ describe("GraphModelBuilder", () => {
     expect(claseNode?.nodeType).toBe(NodeType.CLASS);
     expect(indNode?.nodeType).toBe(NodeType.INDIVIDUAL);
   });
+  it("extrae rdfsLabel del dataValues de la clase cuando existe", () => {
+    const c1 = new OntClass("c1", "Vehiculo");
+    c1.setDataValue("http://www.w3.org/2000/01/rdf-schema#label", "Vehículo");
+    const modelo = new OntologyModel(new Map([["c1", c1]]), new Map());
+    const { nodes } = new GraphModelBuilder().build(modelo);
+    expect(nodes.find((n) => n.id === "c1")?.rdfsLabel).toBe("Vehículo");
+  });
 });

@@ -8,6 +8,7 @@ export interface IGraphNode {
   readonly label: string;
   readonly nodeType: NodeType;
   readonly parentGroupId?: string;
+  readonly rdfsLabel?: string;
 }
 
 export interface IGraphEdge {

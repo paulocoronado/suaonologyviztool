@@ -1,15 +1,19 @@
 import { FileMenu } from "./FileMenu";
 import { ViewMenu } from "./ViewMenu";
+import { FormatMenu } from "./FormatMenu";
 import { ExportMenu } from "./ExportMenu";
 import { SearchBar } from "./SearchBar";
 import type { LayoutKind } from "../layout-controller.interface";
+import type { NodeLabelFormat } from "../node-label-format";
 
 interface NavBarProps {
   fileName: string | null;
   hasData: boolean;
+  labelFormat: NodeLabelFormat;
   onFileSelected: (file: File) => void;
   onToggleIndividuals: (visible: boolean) => void;
   onLayoutChange: (kind: LayoutKind) => void;
+  onLabelFormatChange: (format: NodeLabelFormat) => void;
   onSearch: (query: string) => void;
   onExportPng: () => void;
   onExportPdf: () => void;
@@ -35,6 +39,10 @@ export function NavBar(props: NavBarProps) {
             <ViewMenu
               onToggleIndividuals={props.onToggleIndividuals}
               onLayoutChange={props.onLayoutChange}
+            />
+            <FormatMenu
+              labelFormat={props.labelFormat}
+              onLabelFormatChange={props.onLabelFormatChange}
             />
             <ExportMenu
               onExportPng={props.onExportPng}

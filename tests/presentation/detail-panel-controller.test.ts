@@ -25,4 +25,18 @@ describe("DetailPanelController", () => {
       { propiedad: "comment", valor: "Un comentario" },
     ]);
   });
+
+  it("formatea los dataValues de una clase, no solo de un individuo", () => {
+    const panel = new DetailPanelController();
+    const clase = new OntClass("c1", "Disciplinar");
+    clase.setDataValue(
+      "http://www.w3.org/2000/01/rdf-schema#comment",
+      "Plano del saber experto.",
+    );
+    const vista = panel.showDetails(clase);
+    expect(vista.datos).toEqual([
+      { propiedad: "comment", valor: "Plano del saber experto." },
+    ]);
+    expect(vista.tiposMostrados).toHaveLength(0);
+  });
 });

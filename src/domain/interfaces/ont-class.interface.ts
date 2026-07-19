@@ -5,7 +5,9 @@ export interface IOntClass extends IOntEntity {
   readonly superClasses: IOntClass[];
   readonly subClasses: IOntClass[];
   readonly individuals: IIndividual[];
+  readonly dataValues: ReadonlyMap<string, unknown>;
   addSubclass(child: IOntClass): void;
   addIndividual(individual: IIndividual): void;
   getAllDescendants(): IOntClass[];
+  setDataValue(propertyId: string, value: unknown): void;
 }
