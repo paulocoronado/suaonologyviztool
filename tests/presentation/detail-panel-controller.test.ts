@@ -12,4 +12,17 @@ describe("DetailPanelController", () => {
     const vista = panel.showDetails(individuo);
     expect(vista.tiposMostrados).toHaveLength(2);
   });
+
+  it("formatea los dataValues del individuo con la parte final de la URI de la propiedad", () => {
+    const panel = new DetailPanelController();
+    const individuo = new Individual("i1", "MiConcepto");
+    individuo.setDataValue(
+      "http://www.w3.org/2000/01/rdf-schema#comment",
+      "Un comentario",
+    );
+    const vista = panel.showDetails(individuo);
+    expect(vista.datos).toEqual([
+      { propiedad: "comment", valor: "Un comentario" },
+    ]);
+  });
 });

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { CytoscapeRenderer } from "../renderer/cytoscape-renderer";
 import type { IGraphData } from "../../graph-logic/graph-types";
-import styles from "./GraphCanvas.module.css";
 
 interface GraphCanvasProps {
   data: IGraphData;
@@ -26,5 +25,10 @@ export function GraphCanvas({
     rendererRef.current?.render(data);
   }, [data, onRendererReady, onNodeClick]);
 
-  return <div ref={contenedorRef} className={styles.canvas} />;
+  return (
+    <div
+      ref={contenedorRef}
+      className="h-[600px] w-full rounded-lg border border-gray-200"
+    />
+  );
 }

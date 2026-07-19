@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useAppController } from "../../app/use-app-controller";
 import { useGraphInteractions } from "../../app/use-graph-interactions";
+import { NavBar } from "./NavBar";
 import { FileUploader } from "./FileUploader";
 import { GraphCanvas } from "./GraphCanvas";
 import { Toolbar } from "./Toolbar";
@@ -14,12 +15,12 @@ import {
 } from "../detail-panel-controller";
 import { NodeType } from "../../graph-logic/graph-types";
 import type { LayoutKind } from "../layout-controller.interface";
-import styles from "./App.module.css";
 
 const detailPanelController = new DetailPanelController();
 
 export function App() {
-  const { graphData, error, loadFile, findEntity } = useAppController();
+  const { graphData, fileName, error, loadFile, findEntity } =
+    useAppController();
   const { displayedData, toggleIndividuals, toggleCollapse, search } =
     useGraphInteractions(graphData);
   const rendererRef = useRef<CytoscapeRenderer | null>(null);
@@ -65,27 +66,29 @@ export function App() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1>Visualizador de ontologías</h1>
-      <FileUploader onFileSelected={loadFile} />
-      {error && <p className={styles.error}>{error}</p>}
-      {displayedData && (
-        <>
-          <Toolbar
-            onToggleIndividuals={toggleIndividuals}
-            onSearch={handleSearch}
-            onLayoutChange={handleLayoutChange}
-            onExportPng={() => handleExport("png")}
-            onExportPdf={() => handleExport("pdf")}
-          />
-          <GraphCanvas
-            data={displayedData}
-            onRendererReady={(r) => (rendererRef.current = r)}
-            onNodeClick={handleNodeClick}
-          />
-          <DetailPanel view={detailView} />
-        </>
-      )}
+    <div className="min-h-screen bg-gray-50 font-sans">
+      <NavBar fileName={fileName} />
+      <main className="p-6">
+        <FileUploader onFileSelected={loadFile} />
+        {error && <p className="mt-2 text-red-600">{error}</p>}
+        {displayedData && (
+          <>
+            <Toolbar
+              onToggleIndividuals={toggleIndividuals}
+              onSearch={handleSearch}
+              onLayoutChange={handleLayoutChange}
+              onExportPng={() => handleExport("png")}
+              onExportPdf={() => handleExport("pdf")}
+            />
+            <GraphCanvas
+              data={displayedData}
+              onRendererReady={(r) => (rendererRef.current = r)}
+              onNodeClick={handleNodeClick}
+            />
+            <DetailPanel view={detailView} />
+          </>
+        )}
+      </main>
     </div>
   );
 }

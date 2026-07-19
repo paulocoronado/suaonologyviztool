@@ -10,6 +10,7 @@ export function useAppController() {
     new AppController(new ParserFactory(), new GraphModelBuilder()),
   );
   const [graphData, setGraphData] = useState<IGraphData | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const loadFile = async (file: File): Promise<void> => {
@@ -18,6 +19,7 @@ export function useAppController() {
       setError(null);
       const data = await controllerRef.current.handleFile(file, extension);
       setGraphData(data);
+      setFileName(file.name);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Error al procesar el archivo",
@@ -28,5 +30,5 @@ export function useAppController() {
   const findEntity = (id: string): IOntEntity | undefined =>
     controllerRef.current.findEntityById(id);
 
-  return { graphData, error, loadFile, findEntity };
+  return { graphData, fileName, error, loadFile, findEntity };
 }

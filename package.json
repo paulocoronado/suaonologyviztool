@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "cytoscape": "^3.34.0",
     "cytoscape-expand-collapse": "^4.1.1",
     "html-to-image": "^1.11.13",
@@ -31,7 +32,8 @@
     "react": "^19.2.7",
     "react-cytoscapejs": "^2.0.0",
     "react-dom": "^19.2.7",
-    "readable-stream": "^4.7.0"
+    "readable-stream": "^4.7.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
