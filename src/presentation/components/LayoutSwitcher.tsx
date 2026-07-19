@@ -9,6 +9,7 @@ export function LayoutSwitcher({ onChange }: LayoutSwitcherProps) {
     <select
       onChange={(e) => onChange(e.target.value as LayoutKind)}
       defaultValue="force-directed"
+      className="rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-700"
     >
       <option value="force-directed">Fuerza dirigida</option>
       <option value="hierarchical">Jerárquico</option>

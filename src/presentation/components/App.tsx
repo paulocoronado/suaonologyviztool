@@ -2,9 +2,7 @@ import { useRef, useState } from "react";
 import { useAppController } from "../../app/use-app-controller";
 import { useGraphInteractions } from "../../app/use-graph-interactions";
 import { NavBar } from "./NavBar";
-import { FileUploader } from "./FileUploader";
 import { GraphCanvas } from "./GraphCanvas";
-import { Toolbar } from "./Toolbar";
 import { DetailPanel } from "./DetailPanel";
 import type { CytoscapeRenderer } from "../renderer/cytoscape-renderer";
 import { LayoutController } from "../layout-controller";
@@ -67,19 +65,20 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      <NavBar fileName={fileName} />
+      <NavBar
+        fileName={fileName}
+        hasData={!!displayedData}
+        onFileSelected={loadFile}
+        onToggleIndividuals={toggleIndividuals}
+        onLayoutChange={handleLayoutChange}
+        onSearch={handleSearch}
+        onExportPng={() => handleExport("png")}
+        onExportPdf={() => handleExport("pdf")}
+      />
       <main className="p-6">
-        <FileUploader onFileSelected={loadFile} />
         {error && <p className="mt-2 text-red-600">{error}</p>}
         {displayedData && (
           <>
-            <Toolbar
-              onToggleIndividuals={toggleIndividuals}
-              onSearch={handleSearch}
-              onLayoutChange={handleLayoutChange}
-              onExportPng={() => handleExport("png")}
-              onExportPdf={() => handleExport("pdf")}
-            />
             <GraphCanvas
               data={displayedData}
               onRendererReady={(r) => (rendererRef.current = r)}

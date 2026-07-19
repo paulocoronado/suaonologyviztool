@@ -13,14 +13,20 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex items-center gap-1">
       <input
         type="text"
-        placeholder="Buscar por nombre"
+        placeholder="Buscar..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        className="w-40 rounded-md border border-indigo-800 bg-indigo-900 px-2 py-1 text-sm text-white placeholder-indigo-300 focus:outline-none focus:ring-1 focus:ring-indigo-400"
       />
-      <button type="submit">Buscar</button>
+      <button
+        type="submit"
+        className="rounded-md bg-indigo-800 px-2 py-1 text-sm hover:bg-indigo-700"
+      >
+        Buscar
+      </button>
     </form>
   );
 }
