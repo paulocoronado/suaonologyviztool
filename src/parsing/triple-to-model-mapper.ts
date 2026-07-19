@@ -4,7 +4,7 @@ import { OntClass } from "../domain/ont-class";
 import { Individual } from "../domain/individual";
 import { Relation } from "../domain/relation";
 import { RelationKind } from "../domain/interfaces/relation.interface";
-import type { Triple } from "./triple";
+import { TermType, type Triple } from "./triple";
 import { RDF_VOCABULARY } from "./rdf-vocabulary";
 
 export class TripleToModelMapper {
@@ -26,7 +26,7 @@ export class TripleToModelMapper {
         triple.predicate !== RDF_VOCABULARY.TYPE &&
         triple.predicate !== RDF_VOCABULARY.SUBCLASS_OF
       ) {
-        this.handleObjectProperty(triple);
+        this.handleOtherTriple(triple);
       }
     }
 
@@ -49,14 +49,21 @@ export class TripleToModelMapper {
     padre.addSubclass(hijo);
   }
 
+  private handleOtherTriple(triple: Triple): void {
+    if (triple.objectType === TermType.LITERAL) this.handleDataProperty(triple);
+    else this.handleObjectProperty(triple);
+  }
+
+  private handleDataProperty(triple: Triple): void {
+    const origen = this.findEntity(triple.subject);
+    if (origen instanceof Individual)
+      origen.setDataValue(triple.predicate, triple.object);
+  }
+
   private handleObjectProperty(triple: Triple): void {
     const origen = this.findEntity(triple.subject);
     const destino = this.findEntity(triple.object);
-    if (!origen || !destino) {
-      throw new Error(
-        `Triple referencia una entidad inexistente: ${triple.subject} -> ${triple.object}`,
-      );
-    }
+    if (!origen || !destino) return;
     if (origen instanceof Individual) {
       origen.addRelation(
         new Relation(

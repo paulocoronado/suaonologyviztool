@@ -16,6 +16,9 @@ export class Individual implements IIndividual {
     this.label = label;
     this.comment = comment;
   }
+  setDataValue(propertyId: string, value: unknown): void {
+    this.dataValues.set(propertyId, value);
+  }
 
   addType(type: IOntClass): void {
     this.types.push(type);

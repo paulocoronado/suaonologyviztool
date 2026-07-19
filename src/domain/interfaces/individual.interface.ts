@@ -9,4 +9,5 @@ export interface IIndividual extends IOntEntity {
   addType(type: IOntClass): void;
   addRelation(relation: IRelation): void;
   getRelationsTo(otherId: string): IRelation[];
+  setDataValue(propertyId: string, value: unknown): void;
 }
