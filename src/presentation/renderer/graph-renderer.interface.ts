@@ -5,5 +5,9 @@ export interface IGraphRenderer {
   updateData(data: IGraphData): void;
   centerOn(nodeId: string): void;
   fitToScreen(): void;
-  onNodeClick(handler: (nodeId: string) => void): void;
+  selectNode(nodeId: string): void;
+  onSelectionChange(
+    handler: (selection: { nodeIds: string[]; edgeIds: string[] }) => void,
+  ): void;
+  onNodeDoubleClick(handler: (nodeId: string) => void): void;
 }

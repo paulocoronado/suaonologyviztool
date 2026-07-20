@@ -12,6 +12,7 @@ describe("TripleToModelMapper", () => {
         subject: "i1",
         predicate: RDF_VOCABULARY.TYPE,
         object: "c1",
+        subjectType: TermType.NAMED_NODE,
         objectType: TermType.NAMED_NODE,
       },
     ];
@@ -26,12 +27,14 @@ describe("TripleToModelMapper", () => {
         subject: "i1",
         predicate: RDF_VOCABULARY.TYPE,
         object: "c1",
+        subjectType: TermType.NAMED_NODE,
         objectType: TermType.NAMED_NODE,
       },
       {
         subject: "i1",
         predicate: "rdfs:comment",
         object: "Un comentario cualquiera",
+        subjectType: TermType.NAMED_NODE,
         objectType: TermType.LITERAL,
       },
     ];
@@ -49,11 +52,87 @@ describe("TripleToModelMapper", () => {
         subject: "i1",
         predicate: "objProp",
         object: "no-existe",
+        subjectType: TermType.NAMED_NODE,
         objectType: TermType.NAMED_NODE,
       },
     ];
     expect(() =>
       new TripleToModelMapper().mapTriplesToModel(triples),
     ).not.toThrow();
+  });
+
+  it("ignora las declaraciones de metadatos OWL como rdf:type owl:ObjectProperty", () => {
+    const triples = [
+      {
+        subject: "nutre",
+        predicate: RDF_VOCABULARY.TYPE,
+        object: "http://www.w3.org/2002/07/owl#ObjectProperty",
+        subjectType: TermType.NAMED_NODE,
+        objectType: TermType.NAMED_NODE,
+      },
+    ];
+    const modelo = new TripleToModelMapper().mapTriplesToModel(triples);
+    expect(modelo.findById("nutre")).toBeUndefined();
+  });
+
+  it("ignora un rdfs:subClassOf hacia un nodo en blanco (restriccion anonima)", () => {
+    const triples = [
+      {
+        subject: "c1",
+        predicate: RDF_VOCABULARY.SUBCLASS_OF,
+        object: "_:b0",
+        subjectType: TermType.NAMED_NODE,
+        objectType: TermType.BLANK_NODE,
+      },
+    ];
+    const modelo = new TripleToModelMapper().mapTriplesToModel(triples);
+    expect(modelo.findById("_:b0")).toBeUndefined();
+  });
+
+  it("crea la clase referenciada en rdfs:domain aunque no tenga relacion de subclase", () => {
+    const triples = [
+      {
+        subject: "tienePlano",
+        predicate: RDF_VOCABULARY.DOMAIN,
+        object: "c1",
+        subjectType: TermType.NAMED_NODE,
+        objectType: TermType.NAMED_NODE,
+      },
+    ];
+    const modelo = new TripleToModelMapper().mapTriplesToModel(triples);
+    expect(modelo.findById("c1")).toBeDefined();
+  });
+
+  it("ignora por completo los triples cuyo sujeto es un nodo en blanco (restricciones anonimas)", () => {
+    const triples = [
+      {
+        subject: "_:b0",
+        predicate: RDF_VOCABULARY.TYPE,
+        object: "http://www.w3.org/2002/07/owl#Restriction",
+        subjectType: TermType.BLANK_NODE,
+        objectType: TermType.NAMED_NODE,
+      },
+    ];
+    const modelo = new TripleToModelMapper().mapTriplesToModel(triples);
+    expect(modelo.findById("_:b0")).toBeUndefined();
+    expect(
+      modelo.findById("http://www.w3.org/2002/07/owl#Restriction"),
+    ).toBeUndefined();
+  });
+
+  it("ignora rdfs:range cuando apunta a un tipo de dato XSD, no a una clase", () => {
+    const triples = [
+      {
+        subject: "tieneNombre",
+        predicate: RDF_VOCABULARY.RANGE,
+        object: "http://www.w3.org/2001/XMLSchema#string",
+        subjectType: TermType.NAMED_NODE,
+        objectType: TermType.NAMED_NODE,
+      },
+    ];
+    const modelo = new TripleToModelMapper().mapTriplesToModel(triples);
+    expect(
+      modelo.findById("http://www.w3.org/2001/XMLSchema#string"),
+    ).toBeUndefined();
   });
 });

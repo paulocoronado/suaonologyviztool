@@ -6,13 +6,16 @@ import type { IIndividual } from "./interfaces/individual.interface";
 export class OntologyModel implements IOntologyModel {
   private classes: Map<string, IOntClass>;
   private individuals: Map<string, IIndividual>;
+  private annotationPropertyIds: ReadonlySet<string>;
 
   constructor(
     classes: Map<string, IOntClass>,
     individuals: Map<string, IIndividual>,
+    annotationPropertyIds: ReadonlySet<string> = new Set(),
   ) {
     this.classes = classes;
     this.individuals = individuals;
+    this.annotationPropertyIds = annotationPropertyIds;
   }
 
   findById(id: string): IOntEntity | undefined {
@@ -29,5 +32,9 @@ export class OntologyModel implements IOntologyModel {
 
   getAllIndividuals(): IIndividual[] {
     return Array.from(this.individuals.values());
+  }
+
+  isAnnotationProperty(propertyId: string): boolean {
+    return this.annotationPropertyIds.has(propertyId);
   }
 }

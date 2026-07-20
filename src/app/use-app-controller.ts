@@ -30,5 +30,15 @@ export function useAppController() {
   const findEntity = (id: string): IOntEntity | undefined =>
     controllerRef.current.findEntityById(id);
 
-  return { graphData, fileName, error, loadFile, findEntity };
+  const isAnnotationProperty = (id: string): boolean =>
+    controllerRef.current.isAnnotationProperty(id);
+
+  return {
+    graphData,
+    fileName,
+    error,
+    loadFile,
+    findEntity,
+    isAnnotationProperty,
+  };
 }

@@ -30,6 +30,7 @@ export class RdfXmlParser implements IOntologyParser {
           subject: quad.subject.value,
           predicate: quad.predicate.value,
           object: quad.object.value,
+          subjectType: quad.subject.termType,
           objectType: quad.object.termType,
         });
       });

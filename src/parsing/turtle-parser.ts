@@ -17,6 +17,7 @@ export class TurtleParser implements IOntologyParser {
       subject: q.subject.value,
       predicate: q.predicate.value,
       object: q.object.value,
+      subjectType: q.subject.termType as Triple["subjectType"],
       objectType: q.object.termType as Triple["objectType"],
     }));
     return this.mapper.mapTriplesToModel(triples);

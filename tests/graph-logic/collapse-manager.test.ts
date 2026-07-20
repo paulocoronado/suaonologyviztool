@@ -1,17 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { CollapseManager } from "../../src/graph-logic/collapse-manager";
-import { NodeType } from "../../src/graph-logic/graph-types";
 import { construirGrafoDePrueba } from "./test-helpers";
 
 describe("CollapseManager", () => {
-  it("al colapsar una clase, sus individuos quedan bajo un único nodo compuesto", () => {
+  it("al colapsar una clase, tambien se ocultan sus subclases y los individuos de estas", () => {
     const manager = new CollapseManager(construirGrafoDePrueba());
     const resultado = manager.collapse("c1");
-    const individuosVisibles = resultado.nodes.filter(
-      (n) => n.nodeType === NodeType.INDIVIDUAL,
-    );
-    expect(individuosVisibles).toHaveLength(0);
-    expect(resultado.nodes.some((n) => n.id === "c1")).toBe(true);
+    const idsVisibles = resultado.nodes.map((n) => n.id);
+    expect(idsVisibles).not.toContain("c2");
+    expect(idsVisibles).not.toContain("c3");
   });
 
   it("al expandir, se restauran subclases e individuos sin duplicar nodos", () => {

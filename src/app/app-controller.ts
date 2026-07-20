@@ -28,4 +28,8 @@ export class AppController {
   findEntityById(id: string): IOntEntity | undefined {
     return this.currentModel?.findById(id);
   }
+
+  isAnnotationProperty(propertyId: string): boolean {
+    return this.currentModel?.isAnnotationProperty(propertyId) ?? false;
+  }
 }

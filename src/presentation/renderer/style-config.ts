@@ -5,6 +5,8 @@ export const STYLE_CONFIG = [
       "background-color": "#4f46e5",
       shape: "round-rectangle",
       label: "data(label)",
+      width: 30,
+      height: 30,
     },
   },
   {
@@ -13,7 +15,13 @@ export const STYLE_CONFIG = [
       "background-color": "#10b981",
       shape: "ellipse",
       label: "data(label)",
+      width: 24,
+      height: 24,
     },
+  },
+  {
+    selector: "node:selected",
+    style: { "border-width": 3, "border-color": "#f59e0b" },
   },
   {
     selector: "edge",

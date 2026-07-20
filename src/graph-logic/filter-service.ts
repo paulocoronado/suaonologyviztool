@@ -1,5 +1,5 @@
 import type { IFilterService } from "./interfaces/filter-service.interface";
-import { NodeType, type IGraphData } from "./graph-types";
+import { NodeType, NodeVisibilityMode, type IGraphData } from "./graph-types";
 
 export class FilterService implements IFilterService {
   private originalData: IGraphData;
@@ -8,10 +8,14 @@ export class FilterService implements IFilterService {
     this.originalData = originalData;
   }
 
-  toggleIndividualsVisibility(visible: boolean): IGraphData {
-    if (visible) return this.originalData;
+  filterByVisibility(mode: NodeVisibilityMode): IGraphData {
+    if (mode === NodeVisibilityMode.BOTH) return this.originalData;
+    const tipoAOcultar =
+      mode === NodeVisibilityMode.CLASSES_ONLY
+        ? NodeType.INDIVIDUAL
+        : NodeType.CLASS;
     const nodes = this.originalData.nodes.filter(
-      (n) => n.nodeType !== NodeType.INDIVIDUAL,
+      (n) => n.nodeType !== tipoAOcultar,
     );
     return this.withMatchingEdges(nodes);
   }

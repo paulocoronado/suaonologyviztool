@@ -1,6 +1,6 @@
-import type { IGraphData } from "../graph-types";
+import type { IGraphData, NodeVisibilityMode } from "../graph-types";
 
 export interface IFilterService {
-  toggleIndividualsVisibility(visible: boolean): IGraphData;
+  filterByVisibility(mode: NodeVisibilityMode): IGraphData;
   filterByBranch(classId: string): IGraphData;
 }

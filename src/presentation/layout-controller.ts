@@ -19,4 +19,8 @@ export class LayoutController implements ILayoutController {
   applyLayout(kind: LayoutKind): void {
     this.target.applyLayoutName(ALGORITMOS[kind]);
   }
+
+  setSpacing(factor: number): void {
+    this.target.setSpacingFactor(factor);
+  }
 }
