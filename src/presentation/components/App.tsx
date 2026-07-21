@@ -57,6 +57,10 @@ export function App() {
     setClassSize,
     individualSize,
     setIndividualSize,
+    labelFontSize,
+    setLabelFontSize,
+    labelFontColor,
+    setLabelFontColor,
   } = useAppearanceSettings();
   const rendererRef = useRef<CytoscapeRenderer | null>(null);
   const {
@@ -71,7 +75,10 @@ export function App() {
     changeNodeSize,
     resizeNode,
     clearAllNodeResizes,
+    changeLabelFontSize,
+    changeLabelFontColor,
   } = useRendererActions(rendererRef);
+
   const [labelFormat, setLabelFormat] = useState<NodeLabelFormat>(
     NodeLabelFormat.RDFS_LABEL,
   );
@@ -161,6 +168,8 @@ export function App() {
     changeNodeSize("class", APPEARANCE_DEFAULTS.classSize);
     changeNodeSize("individual", APPEARANCE_DEFAULTS.individualSize);
     changeLabelPosition(APPEARANCE_DEFAULTS.labelPosition);
+    changeLabelFontSize(APPEARANCE_DEFAULTS.labelFontSize);
+    changeLabelFontColor(APPEARANCE_DEFAULTS.labelFontColor);
     clearAllNodeResizes();
   };
 
@@ -168,6 +177,16 @@ export function App() {
     if (kind === "class") setClassSize(size);
     else setIndividualSize(size);
     changeNodeSize(kind, size);
+  };
+
+  const handleLabelFontSizeChange = (size: number) => {
+    setLabelFontSize(size);
+    changeLabelFontSize(size);
+  };
+
+  const handleLabelFontColorChange = (color: string) => {
+    setLabelFontColor(color);
+    changeLabelFontColor(color);
   };
 
   return (
@@ -201,6 +220,10 @@ export function App() {
         classSize={classSize}
         individualSize={individualSize}
         onNodeSizeChange={handleNodeSizeChange}
+        labelFontSize={labelFontSize}
+        labelFontColor={labelFontColor}
+        onLabelFontSizeChange={handleLabelFontSizeChange}
+        onLabelFontColorChange={handleLabelFontColorChange}
       />
       {error && <p className="px-6 py-2 text-red-600">{error}</p>}
       {dataParaRenderizar ? (

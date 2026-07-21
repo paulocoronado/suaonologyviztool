@@ -41,6 +41,10 @@ interface NavBarProps {
   classSize: number;
   individualSize: number;
   onNodeSizeChange: (kind: "class" | "individual", size: number) => void;
+  labelFontSize: number;
+  labelFontColor: string;
+  onLabelFontSizeChange: (size: number) => void;
+  onLabelFontColorChange: (color: string) => void;
 }
 
 export function NavBar(props: NavBarProps) {
@@ -79,6 +83,10 @@ export function NavBar(props: NavBarProps) {
               classSize={props.classSize}
               individualSize={props.individualSize}
               onNodeSizeChange={props.onNodeSizeChange}
+              labelFontSize={props.labelFontSize}
+              labelFontColor={props.labelFontColor}
+              onLabelFontSizeChange={props.onLabelFontSizeChange}
+              onLabelFontColorChange={props.onLabelFontColorChange}
             />
             <SpacingMenu onSpacingChange={props.onSpacingChange} />
             <SectionsMenu

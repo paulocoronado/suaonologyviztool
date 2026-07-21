@@ -7,7 +7,8 @@ import type { NodeLabelFormat } from "../node-label-format";
 import type { NodeShape } from "../renderer/node-shape";
 import type { LabelPosition } from "../renderer/label-position";
 import type { EdgeCurveStyle } from "../renderer/edge-curve-style";
-import { NodeSizeSlider } from "./NodeSizeSlider";
+import { RangeSlider } from "./RangeSlider";
+import { LabelColorPicker } from "./LabelColorPicker";
 
 interface FormatMenuProps {
   labelFormat: NodeLabelFormat;
@@ -22,6 +23,10 @@ interface FormatMenuProps {
   classSize: number;
   individualSize: number;
   onNodeSizeChange: (kind: "class" | "individual", size: number) => void;
+  labelFontSize: number;
+  labelFontColor: string;
+  onLabelFontSizeChange: (size: number) => void;
+  onLabelFontColorChange: (color: string) => void;
 }
 
 export function FormatMenu(props: FormatMenuProps) {
@@ -50,15 +55,36 @@ export function FormatMenu(props: FormatMenuProps) {
           value={props.edgeStyle}
           onChange={props.onEdgeStyleChange}
         />
-        <NodeSizeSlider
+        <RangeSlider
           label="Tamaño de las clases"
           value={props.classSize}
+          min={10}
+          max={80}
+          step={2}
+          unit="px"
           onCommit={(size) => props.onNodeSizeChange("class", size)}
         />
-        <NodeSizeSlider
+        <RangeSlider
           label="Tamaño de los individuos"
           value={props.individualSize}
+          min={10}
+          max={80}
+          step={2}
+          unit="px"
           onCommit={(size) => props.onNodeSizeChange("individual", size)}
+        />
+        <RangeSlider
+          label="Tamaño de la fuente"
+          value={props.labelFontSize}
+          min={6}
+          max={24}
+          step={1}
+          unit="px"
+          onCommit={props.onLabelFontSizeChange}
+        />
+        <LabelColorPicker
+          value={props.labelFontColor}
+          onChange={props.onLabelFontColorChange}
         />
       </div>
     </NavMenu>

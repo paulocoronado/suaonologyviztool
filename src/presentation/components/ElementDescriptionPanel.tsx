@@ -1,5 +1,5 @@
 import type { ElementDescription } from "../element-description-controller";
-import { NodeSizeSlider } from "./NodeSizeSlider";
+import { RangeSlider } from "./RangeSlider";
 
 interface ElementDescriptionPanelProps {
   descriptions: ElementDescription[];
@@ -32,9 +32,13 @@ export function ElementDescriptionPanel({
           </h3>
           {desc.isNode && (
             <div className="mt-3">
-              <NodeSizeSlider
+              <RangeSlider
                 label="Tamaño de este nodo"
                 value={30}
+                min={10}
+                max={80}
+                step={2}
+                unit="px"
                 onCommit={(size) => onResizeNode(desc.id, size)}
               />
             </div>

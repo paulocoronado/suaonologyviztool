@@ -20,4 +20,6 @@ export interface IGraphRenderer {
     handler: (selection: { nodeIds: string[]; edgeIds: string[] }) => void,
   ): void;
   onNodeDoubleClick(handler: (nodeId: string) => void): void;
+  setLabelFontSize(size: number): void;
+  setLabelFontColor(color: string): void;
 }

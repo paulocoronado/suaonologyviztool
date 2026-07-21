@@ -26,6 +26,8 @@ export class CytoscapeRenderer
   private classNodeSize = 30;
   private individualNodeSize = 24;
   private nodeSizeOverrides = new Map<string, number>();
+  private labelFontSize = 12;
+  private labelFontColor = "#111827";
 
   constructor(container?: HTMLElement) {
     this.instance = container
@@ -40,6 +42,17 @@ export class CytoscapeRenderer
     this.applyNodeAppearance();
     this.runLayout(true);
   }
+
+  setLabelFontSize(size: number): void {
+    this.labelFontSize = size;
+    this.applyNodeAppearance();
+  }
+
+  setLabelFontColor(color: string): void {
+    this.labelFontColor = color;
+    this.applyNodeAppearance();
+  }
+
   setEdgeCurveStyle(style: EdgeCurveStyle): void {
     this.edgeCurveStyle = style;
     this.applyEdgeCurveStyle();
@@ -185,6 +198,8 @@ export class CytoscapeRenderer
     this.instance.nodes().style({
       "text-halign": alineacion.halign,
       "text-valign": alineacion.valign,
+      "font-size": this.labelFontSize,
+      color: this.labelFontColor,
     });
     this.applyNodeSizeOverrides();
   }

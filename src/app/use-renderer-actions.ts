@@ -77,6 +77,14 @@ export function useRendererActions(
     rendererRef.current?.clearAllNodeSizeOverrides();
   };
 
+  const changeLabelFontSize = (size: number): void => {
+    rendererRef.current?.setLabelFontSize(size);
+  };
+
+  const changeLabelFontColor = (color: string): void => {
+    rendererRef.current?.setLabelFontColor(color);
+  };
+
   return {
     changeLayout,
     changeSpacing,
@@ -90,5 +98,7 @@ export function useRendererActions(
     resizeNode,
     clearNodeResize,
     clearAllNodeResizes,
+    changeLabelFontSize,
+    changeLabelFontColor,
   };
 }
