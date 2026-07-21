@@ -1,11 +1,14 @@
 import type { ElementDescription } from "../element-description-controller";
+import { NodeSizeSlider } from "./NodeSizeSlider";
 
 interface ElementDescriptionPanelProps {
   descriptions: ElementDescription[];
+  onResizeNode: (nodeId: string, size: number) => void;
 }
 
 export function ElementDescriptionPanel({
   descriptions,
+  onResizeNode,
 }: ElementDescriptionPanelProps) {
   if (descriptions.length === 0) {
     return (
@@ -23,6 +26,20 @@ export function ElementDescriptionPanel({
         >
           <h2 className="text-lg font-semibold text-gray-900">{desc.label}</h2>
           <p className="mt-1 text-sm text-gray-600">{desc.tipoElemento}</p>
+
+          <h3 className="mt-3 text-xs font-medium uppercase text-gray-500">
+            Gráfico del elemento
+          </h3>
+          {desc.isNode && (
+            <div className="mt-3">
+              <NodeSizeSlider
+                label="Tamaño de este nodo"
+                value={30}
+                onCommit={(size) => onResizeNode(desc.id, size)}
+              />
+            </div>
+          )}
+
           {desc.anotaciones.length > 0 && (
             <>
               <h3 className="mt-3 text-xs font-medium uppercase text-gray-500">

@@ -1,5 +1,10 @@
-export type LayoutKind = "hierarchical" | "force-directed";
-
+export type LayoutKind =
+  | "force-directed"
+  | "hierarchical"
+  | "grid"
+  | "circle"
+  | "concentric"
+  | "random";
 export interface ILayoutTarget {
   applyLayoutName(algorithmName: string): void;
   setSpacingFactor(spacingFactor: number): void;

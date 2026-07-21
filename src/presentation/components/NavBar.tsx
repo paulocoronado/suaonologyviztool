@@ -8,6 +8,9 @@ import { SearchBar } from "./SearchBar";
 import type { LayoutKind } from "../layout-controller.interface";
 import type { NodeLabelFormat } from "../node-label-format";
 import type { NodeVisibilityMode } from "../../graph-logic/graph-types";
+import type { EdgeCurveStyle } from "../renderer/edge-curve-style";
+import type { LabelPosition } from "../renderer/label-position";
+import type { NodeShape } from "../renderer/node-shape";
 
 interface NavBarProps {
   fileName: string | null;
@@ -28,6 +31,16 @@ interface NavBarProps {
   onExportPdf: () => void;
   backgroundColor: string;
   onBackgroundColorChange: (color: string) => void;
+  onEdgeStyleChange: (style: EdgeCurveStyle) => void;
+  edgeStyle: EdgeCurveStyle;
+  labelPosition: LabelPosition;
+  classShape: NodeShape;
+  individualShape: NodeShape;
+  onLabelPositionChange: (position: LabelPosition) => void;
+  onNodeShapeChange: (kind: "class" | "individual", shape: NodeShape) => void;
+  classSize: number;
+  individualSize: number;
+  onNodeSizeChange: (kind: "class" | "individual", size: number) => void;
 }
 
 export function NavBar(props: NavBarProps) {
@@ -56,6 +69,16 @@ export function NavBar(props: NavBarProps) {
             <FormatMenu
               labelFormat={props.labelFormat}
               onLabelFormatChange={props.onLabelFormatChange}
+              labelPosition={props.labelPosition}
+              onLabelPositionChange={props.onLabelPositionChange}
+              classShape={props.classShape}
+              individualShape={props.individualShape}
+              onNodeShapeChange={props.onNodeShapeChange}
+              edgeStyle={props.edgeStyle}
+              onEdgeStyleChange={props.onEdgeStyleChange}
+              classSize={props.classSize}
+              individualSize={props.individualSize}
+              onNodeSizeChange={props.onNodeSizeChange}
             />
             <SpacingMenu onSpacingChange={props.onSpacingChange} />
             <SectionsMenu

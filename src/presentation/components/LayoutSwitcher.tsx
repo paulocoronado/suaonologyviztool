@@ -13,6 +13,10 @@ export function LayoutSwitcher({ onChange }: LayoutSwitcherProps) {
     >
       <option value="force-directed">Fuerza dirigida</option>
       <option value="hierarchical">Jerárquico</option>
+      <option value="grid">Cuadrícula</option>
+      <option value="circle">Círculo</option>
+      <option value="concentric">Concéntrico</option>
+      <option value="random">Aleatorio</option>
     </select>
   );
 }

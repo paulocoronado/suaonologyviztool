@@ -5,8 +5,12 @@ import type {
 } from "./layout-controller.interface";
 
 const ALGORITMOS: Record<LayoutKind, string> = {
-  hierarchical: "breadthfirst",
   "force-directed": "cose",
+  hierarchical: "breadthfirst",
+  grid: "grid",
+  circle: "circle",
+  concentric: "concentric",
+  random: "random",
 };
 
 export class LayoutController implements ILayoutController {

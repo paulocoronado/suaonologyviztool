@@ -15,6 +15,7 @@ export interface GraphAppContextValue {
     edgeIds: string[];
   }) => void;
   onNodeDoubleClick: (nodeId: string) => void;
+  onResizeNode: (nodeId: string, size: number) => void;
 }
 export const GraphAppContext = createContext<GraphAppContextValue | null>(null);
 

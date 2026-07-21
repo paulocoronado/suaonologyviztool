@@ -1,15 +1,66 @@
 import { useState } from "react";
+import { NodeShape } from "../presentation/renderer/node-shape";
+import { LabelPosition } from "../presentation/renderer/label-position";
+import { EdgeCurveStyle } from "../presentation/renderer/edge-curve-style";
 
-const DEFAULT_BACKGROUND_COLOR = "#f9fafb";
+export const APPEARANCE_DEFAULTS = {
+  backgroundColor: "#f9fafb",
+  classShape: NodeShape.ROUND_RECTANGLE,
+  individualShape: NodeShape.ELLIPSE,
+  classSize: 30,
+  individualSize: 24,
+  labelPosition: LabelPosition.CENTER,
+  edgeStyle: EdgeCurveStyle.BEZIER,
+} as const;
 
 export function useAppearanceSettings() {
-  const [graphBackgroundColor, setGraphBackgroundColor] = useState(
-    DEFAULT_BACKGROUND_COLOR,
+  const [graphBackgroundColor, setGraphBackgroundColor] = useState<string>(
+    APPEARANCE_DEFAULTS.backgroundColor,
+  );
+  const [classShape, setClassShape] = useState<NodeShape>(
+    APPEARANCE_DEFAULTS.classShape,
+  );
+  const [individualShape, setIndividualShape] = useState<NodeShape>(
+    APPEARANCE_DEFAULTS.individualShape,
+  );
+  const [classSize, setClassSize] = useState<number>(
+    APPEARANCE_DEFAULTS.classSize,
+  );
+  const [individualSize, setIndividualSize] = useState<number>(
+    APPEARANCE_DEFAULTS.individualSize,
+  );
+  const [labelPosition, setLabelPosition] = useState<LabelPosition>(
+    APPEARANCE_DEFAULTS.labelPosition,
+  );
+  const [edgeStyle, setEdgeStyle] = useState<EdgeCurveStyle>(
+    APPEARANCE_DEFAULTS.edgeStyle,
   );
 
   const resetAppearance = (): void => {
-    setGraphBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+    setGraphBackgroundColor(APPEARANCE_DEFAULTS.backgroundColor);
+    setClassShape(APPEARANCE_DEFAULTS.classShape);
+    setIndividualShape(APPEARANCE_DEFAULTS.individualShape);
+    setClassSize(APPEARANCE_DEFAULTS.classSize);
+    setIndividualSize(APPEARANCE_DEFAULTS.individualSize);
+    setLabelPosition(APPEARANCE_DEFAULTS.labelPosition);
+    setEdgeStyle(APPEARANCE_DEFAULTS.edgeStyle);
   };
 
-  return { graphBackgroundColor, setGraphBackgroundColor, resetAppearance };
+  return {
+    graphBackgroundColor,
+    setGraphBackgroundColor,
+    classShape,
+    setClassShape,
+    individualShape,
+    setIndividualShape,
+    classSize,
+    setClassSize,
+    individualSize,
+    setIndividualSize,
+    labelPosition,
+    setLabelPosition,
+    edgeStyle,
+    setEdgeStyle,
+    resetAppearance,
+  };
 }

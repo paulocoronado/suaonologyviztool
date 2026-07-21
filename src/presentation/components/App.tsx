@@ -3,7 +3,10 @@ import { useAppController } from "../../app/use-app-controller";
 import { useGraphInteractions } from "../../app/use-graph-interactions";
 import { useDockviewSections } from "../../app/use-dockview-sections";
 import { useRendererActions } from "../../app/use-renderer-actions";
-import { useAppearanceSettings } from "../../app/use-appearance-settings";
+import {
+  useAppearanceSettings,
+  APPEARANCE_DEFAULTS,
+} from "../../app/use-appearance-settings";
 import { NavBar } from "./NavBar";
 import { DockviewLayout } from "../layout/DockviewLayout";
 import { GraphAppContext } from "../layout/graph-app-context";
@@ -13,6 +16,9 @@ import { ElementDescriptionController } from "../element-description-controller"
 import { NodeLabelFormat, resolveNodeLabel } from "../node-label-format";
 import { NodeType, type IGraphEdge } from "../../graph-logic/graph-types";
 import type { IOntEntity } from "../../domain/interfaces/ont-entity.interface";
+import type { NodeShape } from "../renderer/node-shape";
+import type { LabelPosition } from "../renderer/label-position";
+import type { EdgeCurveStyle } from "../renderer/edge-curve-style";
 
 const detailPanelController = new DetailPanelController();
 const elementDescriptionController = new ElementDescriptionController();
@@ -35,11 +41,37 @@ export function App() {
   } = useGraphInteractions(graphData);
   const { handleReady, visiblePanelIds, toggleSection, resetLayout } =
     useDockviewSections();
-  const { graphBackgroundColor, setGraphBackgroundColor, resetAppearance } =
-    useAppearanceSettings();
+  const {
+    graphBackgroundColor,
+    setGraphBackgroundColor,
+    classShape,
+    setClassShape,
+    individualShape,
+    setIndividualShape,
+    labelPosition,
+    setLabelPosition,
+    edgeStyle,
+    setEdgeStyle,
+    resetAppearance,
+    classSize,
+    setClassSize,
+    individualSize,
+    setIndividualSize,
+  } = useAppearanceSettings();
   const rendererRef = useRef<CytoscapeRenderer | null>(null);
-  const { changeLayout, changeSpacing, fitToScreen, focusNode, exportGraph } =
-    useRendererActions(rendererRef);
+  const {
+    changeLayout,
+    changeSpacing,
+    fitToScreen,
+    focusNode,
+    exportGraph,
+    changeEdgeStyle,
+    changeNodeShape,
+    changeLabelPosition,
+    changeNodeSize,
+    resizeNode,
+    clearAllNodeResizes,
+  } = useRendererActions(rendererRef);
   const [labelFormat, setLabelFormat] = useState<NodeLabelFormat>(
     NodeLabelFormat.RDFS_LABEL,
   );
@@ -101,9 +133,41 @@ export function App() {
     if (nodo) focusNode(nodo.id);
   };
 
+  const handleEdgeStyleChange = (style: EdgeCurveStyle) => {
+    setEdgeStyle(style);
+    changeEdgeStyle(style);
+  };
+
+  const handleNodeShapeChange = (
+    kind: "class" | "individual",
+    shape: NodeShape,
+  ) => {
+    if (kind === "class") setClassShape(shape);
+    else setIndividualShape(shape);
+    changeNodeShape(kind, shape);
+  };
+
+  const handleLabelPositionChange = (position: LabelPosition) => {
+    setLabelPosition(position);
+    changeLabelPosition(position);
+  };
+
   const handleResetLayout = () => {
     resetLayout();
     resetAppearance();
+    changeEdgeStyle(APPEARANCE_DEFAULTS.edgeStyle);
+    changeNodeShape("class", APPEARANCE_DEFAULTS.classShape);
+    changeNodeShape("individual", APPEARANCE_DEFAULTS.individualShape);
+    changeNodeSize("class", APPEARANCE_DEFAULTS.classSize);
+    changeNodeSize("individual", APPEARANCE_DEFAULTS.individualSize);
+    changeLabelPosition(APPEARANCE_DEFAULTS.labelPosition);
+    clearAllNodeResizes();
+  };
+
+  const handleNodeSizeChange = (kind: "class" | "individual", size: number) => {
+    if (kind === "class") setClassSize(size);
+    else setIndividualSize(size);
+    changeNodeSize(kind, size);
   };
 
   return (
@@ -115,10 +179,17 @@ export function App() {
         visibilityMode={visibilityMode}
         visiblePanelIds={visiblePanelIds}
         backgroundColor={graphBackgroundColor}
+        labelPosition={labelPosition}
+        classShape={classShape}
+        individualShape={individualShape}
+        edgeStyle={edgeStyle}
         onFileSelected={loadFile}
         onVisibilityChange={changeVisibility}
         onLayoutChange={changeLayout}
         onLabelFormatChange={setLabelFormat}
+        onLabelPositionChange={handleLabelPositionChange}
+        onNodeShapeChange={handleNodeShapeChange}
+        onEdgeStyleChange={handleEdgeStyleChange}
         onSpacingChange={changeSpacing}
         onFitToScreen={fitToScreen}
         onToggleSection={toggleSection}
@@ -127,6 +198,9 @@ export function App() {
         onSearch={handleSearch}
         onExportPng={() => exportGraph("png")}
         onExportPdf={() => exportGraph("pdf")}
+        classSize={classSize}
+        individualSize={individualSize}
+        onNodeSizeChange={handleNodeSizeChange}
       />
       {error && <p className="px-6 py-2 text-red-600">{error}</p>}
       {dataParaRenderizar ? (
@@ -139,6 +213,7 @@ export function App() {
             onRendererReady: (r) => (rendererRef.current = r),
             onSelectionChange: setSelection,
             onNodeDoubleClick: handleNodeDoubleClick,
+            onResizeNode: resizeNode,
           }}
         >
           <DockviewLayout onReady={handleReady} />

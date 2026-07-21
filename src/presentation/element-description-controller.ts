@@ -23,6 +23,7 @@ export interface ElementDescription {
   id: string;
   label: string;
   tipoElemento: string;
+  isNode: boolean;
   anotaciones: ElementDataEntry[];
   propiedadesDatos: ElementDataEntry[];
   propiedadesObjeto: ElementRelationEntry[];
@@ -60,6 +61,7 @@ export class ElementDescriptionController {
         ? this.extractObjectProperties(entity as IIndividual)
         : [],
       grafico: buildNeighborhood(graphData, entity.id),
+      isNode: true,
     };
   }
 
@@ -77,6 +79,7 @@ export class ElementDescriptionController {
       propiedadesDatos: [],
       propiedadesObjeto: [],
       grafico: buildNeighborhoodForEdge(graphData, edge.id),
+      isNode: false,
     };
   }
 
