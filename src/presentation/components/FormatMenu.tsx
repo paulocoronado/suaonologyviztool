@@ -9,6 +9,7 @@ import type { LabelPosition } from "../renderer/label-position";
 import type { EdgeCurveStyle } from "../renderer/edge-curve-style";
 import { RangeSlider } from "./RangeSlider";
 import { LabelColorPicker } from "./LabelColorPicker";
+import { LabelWrapSettings } from "./LabelWrapSettings";
 
 interface FormatMenuProps {
   labelFormat: NodeLabelFormat;
@@ -27,6 +28,10 @@ interface FormatMenuProps {
   labelFontColor: string;
   onLabelFontSizeChange: (size: number) => void;
   onLabelFontColorChange: (color: string) => void;
+  labelWrap: boolean;
+  labelMaxWidth: number;
+  onLabelWrapChange: (enabled: boolean) => void;
+  onLabelMaxWidthChange: (width: number) => void;
 }
 
 export function FormatMenu(props: FormatMenuProps) {
@@ -59,7 +64,7 @@ export function FormatMenu(props: FormatMenuProps) {
           label="Tamaño de las clases"
           value={props.classSize}
           min={10}
-          max={80}
+          max={200}
           step={2}
           unit="px"
           onCommit={(size) => props.onNodeSizeChange("class", size)}
@@ -68,7 +73,7 @@ export function FormatMenu(props: FormatMenuProps) {
           label="Tamaño de los individuos"
           value={props.individualSize}
           min={10}
-          max={80}
+          max={200}
           step={2}
           unit="px"
           onCommit={(size) => props.onNodeSizeChange("individual", size)}
@@ -85,6 +90,12 @@ export function FormatMenu(props: FormatMenuProps) {
         <LabelColorPicker
           value={props.labelFontColor}
           onChange={props.onLabelFontColorChange}
+        />
+        <LabelWrapSettings
+          wrap={props.labelWrap}
+          maxWidth={props.labelMaxWidth}
+          onWrapChange={props.onLabelWrapChange}
+          onMaxWidthChange={props.onLabelMaxWidthChange}
         />
       </div>
     </NavMenu>

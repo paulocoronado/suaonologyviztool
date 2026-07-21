@@ -45,6 +45,10 @@ interface NavBarProps {
   labelFontColor: string;
   onLabelFontSizeChange: (size: number) => void;
   onLabelFontColorChange: (color: string) => void;
+  labelWrap: boolean;
+  labelMaxWidth: number;
+  onLabelWrapChange: (enabled: boolean) => void;
+  onLabelMaxWidthChange: (width: number) => void;
 }
 
 export function NavBar(props: NavBarProps) {
@@ -87,6 +91,10 @@ export function NavBar(props: NavBarProps) {
               labelFontColor={props.labelFontColor}
               onLabelFontSizeChange={props.onLabelFontSizeChange}
               onLabelFontColorChange={props.onLabelFontColorChange}
+              labelWrap={props.labelWrap}
+              labelMaxWidth={props.labelMaxWidth}
+              onLabelWrapChange={props.onLabelWrapChange}
+              onLabelMaxWidthChange={props.onLabelMaxWidthChange}
             />
             <SpacingMenu onSpacingChange={props.onSpacingChange} />
             <SectionsMenu

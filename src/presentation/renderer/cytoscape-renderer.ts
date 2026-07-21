@@ -28,6 +28,18 @@ export class CytoscapeRenderer
   private nodeSizeOverrides = new Map<string, number>();
   private labelFontSize = 12;
   private labelFontColor = "#111827";
+  private labelWrap = false;
+  private labelMaxWidth = 80;
+
+  setLabelWrap(enabled: boolean): void {
+    this.labelWrap = enabled;
+    this.applyNodeAppearance();
+  }
+
+  setLabelMaxWidth(width: number): void {
+    this.labelMaxWidth = width;
+    this.applyNodeAppearance();
+  }
 
   constructor(container?: HTMLElement) {
     this.instance = container
@@ -200,6 +212,8 @@ export class CytoscapeRenderer
       "text-valign": alineacion.valign,
       "font-size": this.labelFontSize,
       color: this.labelFontColor,
+      "text-wrap": this.labelWrap ? "wrap" : "none",
+      "text-max-width": this.labelMaxWidth,
     });
     this.applyNodeSizeOverrides();
   }

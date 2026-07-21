@@ -12,6 +12,8 @@ export const APPEARANCE_DEFAULTS = {
   labelPosition: LabelPosition.CENTER,
   labelFontSize: 12,
   labelFontColor: "#111827",
+  labelWrap: false,
+  labelMaxWidth: 80,
   edgeStyle: EdgeCurveStyle.BEZIER,
 } as const;
 
@@ -45,6 +47,13 @@ export function useAppearanceSettings() {
     APPEARANCE_DEFAULTS.labelFontColor,
   );
 
+  const [labelWrap, setLabelWrap] = useState<boolean>(
+    APPEARANCE_DEFAULTS.labelWrap,
+  );
+  const [labelMaxWidth, setLabelMaxWidth] = useState<number>(
+    APPEARANCE_DEFAULTS.labelMaxWidth,
+  );
+
   const resetAppearance = (): void => {
     setGraphBackgroundColor(APPEARANCE_DEFAULTS.backgroundColor);
     setClassShape(APPEARANCE_DEFAULTS.classShape);
@@ -55,6 +64,8 @@ export function useAppearanceSettings() {
     setEdgeStyle(APPEARANCE_DEFAULTS.edgeStyle);
     setLabelFontSize(APPEARANCE_DEFAULTS.labelFontSize);
     setLabelFontColor(APPEARANCE_DEFAULTS.labelFontColor);
+    setLabelWrap(APPEARANCE_DEFAULTS.labelWrap);
+    setLabelMaxWidth(APPEARANCE_DEFAULTS.labelMaxWidth);
   };
 
   return {
@@ -76,6 +87,10 @@ export function useAppearanceSettings() {
     setLabelFontSize,
     labelFontColor,
     setLabelFontColor,
+    labelWrap,
+    setLabelWrap,
+    labelMaxWidth,
+    setLabelMaxWidth,
     resetAppearance,
   };
 }

@@ -61,6 +61,10 @@ export function App() {
     setLabelFontSize,
     labelFontColor,
     setLabelFontColor,
+    labelWrap,
+    setLabelWrap,
+    labelMaxWidth,
+    setLabelMaxWidth,
   } = useAppearanceSettings();
   const rendererRef = useRef<CytoscapeRenderer | null>(null);
   const {
@@ -77,7 +81,19 @@ export function App() {
     clearAllNodeResizes,
     changeLabelFontSize,
     changeLabelFontColor,
+    changeLabelWrap,
+    changeLabelMaxWidth,
   } = useRendererActions(rendererRef);
+
+  const handleLabelWrapChange = (enabled: boolean) => {
+    setLabelWrap(enabled);
+    changeLabelWrap(enabled);
+  };
+
+  const handleLabelMaxWidthChange = (width: number) => {
+    setLabelMaxWidth(width);
+    changeLabelMaxWidth(width);
+  };
 
   const [labelFormat, setLabelFormat] = useState<NodeLabelFormat>(
     NodeLabelFormat.RDFS_LABEL,
@@ -170,6 +186,8 @@ export function App() {
     changeLabelPosition(APPEARANCE_DEFAULTS.labelPosition);
     changeLabelFontSize(APPEARANCE_DEFAULTS.labelFontSize);
     changeLabelFontColor(APPEARANCE_DEFAULTS.labelFontColor);
+    changeLabelWrap(APPEARANCE_DEFAULTS.labelWrap);
+    changeLabelMaxWidth(APPEARANCE_DEFAULTS.labelMaxWidth);
     clearAllNodeResizes();
   };
 
@@ -224,6 +242,10 @@ export function App() {
         labelFontColor={labelFontColor}
         onLabelFontSizeChange={handleLabelFontSizeChange}
         onLabelFontColorChange={handleLabelFontColorChange}
+        labelWrap={labelWrap}
+        labelMaxWidth={labelMaxWidth}
+        onLabelWrapChange={handleLabelWrapChange}
+        onLabelMaxWidthChange={handleLabelMaxWidthChange}
       />
       {error && <p className="px-6 py-2 text-red-600">{error}</p>}
       {dataParaRenderizar ? (

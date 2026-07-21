@@ -22,4 +22,6 @@ export interface IGraphRenderer {
   onNodeDoubleClick(handler: (nodeId: string) => void): void;
   setLabelFontSize(size: number): void;
   setLabelFontColor(color: string): void;
+  setLabelWrap(enabled: boolean): void;
+  setLabelMaxWidth(width: number): void;
 }

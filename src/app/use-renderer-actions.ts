@@ -85,6 +85,14 @@ export function useRendererActions(
     rendererRef.current?.setLabelFontColor(color);
   };
 
+  const changeLabelWrap = (enabled: boolean): void => {
+    rendererRef.current?.setLabelWrap(enabled);
+  };
+
+  const changeLabelMaxWidth = (width: number): void => {
+    rendererRef.current?.setLabelMaxWidth(width);
+  };
+
   return {
     changeLayout,
     changeSpacing,
@@ -100,5 +108,7 @@ export function useRendererActions(
     clearAllNodeResizes,
     changeLabelFontSize,
     changeLabelFontColor,
+    changeLabelWrap,
+    changeLabelMaxWidth,
   };
 }
